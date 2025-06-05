@@ -1,89 +1,83 @@
-function getComputerChoice() {
-    num = Math.random() * 10;
-    
-    if (num < 3) {
-        return 1; // Rock
-    }
-    else if (num >= 3 && num < 6) {
-        return 2; // Paper
-    }
-    else {
-        return 3; // Scissor
-    }
+let playerScore = 0;
+let computerScore = 0;
+
+const playerScoreDisplay = document.querySelector("#playerScore");
+const computerScoreDisplay = document.querySelector("#computerScore");
+const moveLog = document.querySelector("#moveLog");
+
+// Utility to get computer's move
+function getComputerMove() {
+  const options = ["rock", "paper", "scissors"];
+  const randomIndex = Math.floor(Math.random() * 3);
+  return options[randomIndex];
 }
 
-
-function printSelectedCard(who, input) {
-    if (input == 1) {
-        console.log(`${who} selected Rock`);
-    }
-    else if (input == 2) {
-        console.log(`${who} selected Paper`);
-    }
-    else {
-        console.log(`${who} selected Scissor`);
-    }
+// Log a move to the moveLog div
+function logMove(who, move) {
+  const entry = document.createElement("div");
+  entry.textContent = `-- ${who} selected ${move.charAt(0).toUpperCase() + move.slice(1)}`;
+  moveLog.appendChild(entry);
 }
 
-function printResult(user_input, computer_input, score) {
-    if (user_input == 1) {
-        if (computer_input == 1) {
-            console.log(" - Tie");
-        }
-        else if (computer_input == 2) {
-            console.log(" - Lost");
-        }
-        else {
-            console.log(" - Won");
-            score++;
-        }
-    }
-    else if (user_input == 2) {
-        if (computer_input == 1) {
-            console.log(" - Won");
-            score++;
-        }
-        else if (computer_input == 2) {
-            console.log(" - Tie");
-        }
-        else {
-            console.log(" - Lost");
-        }
-    }
-    else {
-        if (computer_input == 1) {
-            console.log(" - Lost");
-        }
-        else if (computer_input == 2) {
-            console.log(" - Won");
-            score++;
-        }
-        else {
-            console.log(" - Tie");
-        }
-    }
-
-    return score;
+// Log winner of the round
+function logRoundWinner(winner) {
+  const entry = document.createElement("div");
+  if (winner === "player") {
+    entry.textContent = "🎉 You won this round!";
+  } else if (winner === "computer") {
+    entry.textContent = "💻 Computer won this round!";
+  } else {
+    entry.textContent = "🤝 It's a tie!";
+  }
+  moveLog.appendChild(entry);
 }
 
-console.log("\n--> Menu:\n  1. Rock\n  2. Paper\n  3. Scissor\n");
-let tries = 3;
-let score = 0;
-
-while (tries > 0) {
-    let user_input = parseInt(prompt("\n - Enter your selection: "));
-    if (user_input < 1 || user_input > 3) {
-        continue;
-    }
-    console.log("\n");
-    printSelectedCard("You", user_input);
-
-    let computer_input = getComputerChoice();
-    printSelectedCard("Computer", computer_input);
-
-    score = printResult(user_input, computer_input, score);
-
-    tries--;
+// Check and declare match winner
+function checkMatchWinner() {
+  if (playerScore >= 5) {
+    alert("🏆 You won the match!");
+  } else if (computerScore >= 5) {
+    alert("💻 Computer won the match!");
+  }
 }
 
-console.log(`\n--> Your score is ${score}`);
+// Update score display
+function updateScores() {
+  playerScoreDisplay.textContent = `Your Score: ${playerScore}`;
+  computerScoreDisplay.textContent = `Computer Score: ${computerScore}`;
+  checkMatchWinner();
+}
+
+// Game logic per round
+function handlePlayerChoice(playerMove) {
+  if (playerScore >= 5 || computerScore >= 5) return;
+
+  // 🔁 Clear move log before new round starts
+  moveLog.textContent = "";
+
+  const computerMove = getComputerMove();
+
+  logMove("You", playerMove);
+  logMove("Computer", computerMove);
+
+  if (playerMove === computerMove) {
+    logRoundWinner("tie");
+  } else if (
+    (playerMove === "rock" && computerMove === "scissors") ||
+    (playerMove === "paper" && computerMove === "rock") ||
+    (playerMove === "scissors" && computerMove === "paper")
+  ) {
+    playerScore++;
+    logRoundWinner("player");
+  } else {
+    computerScore++;
+    logRoundWinner("computer");
+  }
+
+  updateScores();
+}
+
+// Attach event listeners
+document.querySelector("#rock").addEventListener("click", () => handlePlayerChoice("rock"));
+document.querySelector("#paper").addEventListener("click", () => handlePlayerChoice("paper"));
+document.querySelector("#scissors").addEventListener("click", () => handlePlayerChoice("scissors"));

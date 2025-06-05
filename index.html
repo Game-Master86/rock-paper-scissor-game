@@ -1,12 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercise 3</title>
-    <script src="./script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rock Paper Scissors</title>
+  <script src="script.js" defer></script>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 4rem;
+    }
+
+    #moveSelection {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    button {
+      margin: 10px;
+      height: 100px;
+      width: 150px;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    #rock { background-color: aqua; }
+    #paper { background-color: aquamarine; }
+    #scissors { background-color: chartreuse; }
+
+    .scoreBoard {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 30px;
+      font-size: 1.5rem;
+    }
+
+    #moves {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    #moves h2 {
+      margin-bottom: 10px;
+    }
+
+    #moveLog {
+      white-space: pre-line;
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-    
+  <h1>Rock Paper Scissors</h1>
+
+  <div id="moveSelection">
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+  </div>
+
+  <div class="scoreBoard">
+    <div id="playerScore">Your Score: 0</div>
+    <div id="computerScore">Computer Score: 0</div>
+  </div>
+
+  <div id="moves">
+    <h2>-- Moves --</h2>
+    <div id="moveLog"></div>
+  </div>
 </body>
 </html>
